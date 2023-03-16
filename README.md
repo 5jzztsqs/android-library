@@ -1,4 +1,4 @@
-##step 1
+## step 1
 ```gradle
 allprojects {
 		repositories {
@@ -6,9 +6,9 @@ allprojects {
 		}
 	}
 ```
-##step 2
+## step 2
 ```gradle
 dependencies {
-	        implementation 'com.github.5jzztsqs:android-library:1.0.0'
+	        implementation 'com.github.5jzztsqs:android-library:1.0.5'
 	}
 ```

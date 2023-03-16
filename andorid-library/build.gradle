@@ -39,8 +39,8 @@ dependencies {
     api 'com.alibaba:fastjson:1.1.70.android'
     api 'com.github.BzCoder:EasyGlide:1.0.8'
     api 'com.tencent:mmkv:1.2.15'
-    api 'com.qmuiteam:qmui:2.0.0-alpha10'
-    api "com.qmuiteam:arch:2.0.0-alpha10"
+    api 'com.qmuiteam:qmui:2.0.1'
+    api "com.qmuiteam:arch:2.0.1"
     api 'com.github.CymChad:BaseRecyclerViewAdapterHelper:3.0.4'
     api 'com.blankj:utilcodex:1.31.1'
     api 'androidx.appcompat:appcompat:1.4.1'

@@ -36,6 +36,10 @@ dependencies {
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     api 'androidx.annotation:annotation:1.5.0'
+    api 'io.github.lucksiege:pictureselector:v3.10.8'
+    api 'io.github.lucksiege:compress:v3.10.8'
+    api 'io.github.lucksiege:ucrop:v3.10.8'
+    api 'io.github.lucksiege:camerax:v3.10.8'
     api 'com.alibaba:fastjson:1.1.70.android'
     api 'com.github.BzCoder:EasyGlide:1.0.8'
     api 'com.tencent:mmkv:1.2.15'

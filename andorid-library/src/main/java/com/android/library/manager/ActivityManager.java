@@ -4,13 +4,13 @@ import android.app.Activity;
 
 import java.util.Stack;
 
-public class AppManager {
+public class ActivityManager {
     private static Stack<Activity> activityStack;
-    private static AppManager instance;
+    private static ActivityManager instance;
 
-    public static AppManager getAppManager() {
+    public static ActivityManager getAppManager() {
         if (instance == null) {
-            instance = new AppManager();
+            instance = new ActivityManager();
         }
         return instance;
     }

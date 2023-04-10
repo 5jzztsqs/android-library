@@ -1,4 +1,4 @@
-package com.android.library.http;
+package com.android.demo.http;
 
 import rxhttp.wrapper.annotation.DefaultDomain;
 

@@ -3,7 +3,7 @@ plugins {
 }
 
 android {
-    namespace 'com.android.library'
+    namespace 'com.android.demo'
     compileSdk 32
 
     defaultConfig {

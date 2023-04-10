@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.library.base.BaseWebView;
 
+
 public class DefaultWebView extends BaseWebView {
     private AppCompatActivity activity;
 

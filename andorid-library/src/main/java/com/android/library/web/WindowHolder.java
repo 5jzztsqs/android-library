@@ -5,7 +5,7 @@ import com.android.library.base.BaseEntity;
 public class WindowHolder extends BaseEntity {
 
     private String title;
-    private boolean autoTitle = true;
+    private boolean autoTitle;
     private boolean hideTopBar;
     private boolean hideBack;
     private boolean canGoBack = true;

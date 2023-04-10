@@ -3,7 +3,6 @@ package com.android.library.web;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 
 import com.android.library.R;
 import com.android.library.base.BaseActivity;

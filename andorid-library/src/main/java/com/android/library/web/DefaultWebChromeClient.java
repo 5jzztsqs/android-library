@@ -15,20 +15,29 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class DefaultWebChromeClient extends WebChromeClient {
     private AppCompatActivity activity;
-
+    private IBridge bridge;
     public DefaultWebChromeClient(AppCompatActivity activity) {
         this.activity = activity;
+        if(activity instanceof IBridge){
+            this.bridge = (IBridge) activity;
+        }
     }
 
 
     @Override
     public void onProgressChanged(WebView view, int newProgress) {
         super.onProgressChanged(view, newProgress);
+        if(bridge != null){
+            bridge.onProgress(newProgress);
+        }
     }
 
     @Override
     public void onReceivedTitle(WebView view, String title) {
         super.onReceivedTitle(view, title);
+        if(bridge != null){
+            bridge.updateTitle(title);
+        }
     }
 
     @Override

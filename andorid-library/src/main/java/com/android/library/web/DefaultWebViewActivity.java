@@ -10,7 +10,7 @@ import com.qmuiteam.qmui.widget.QMUITopBarLayout;
 import com.qmuiteam.qmui.widget.webview.QMUIWebViewContainer;
 
 
-public class DefaultWebViewActivity extends BaseActivity {
+public class DefaultWebViewActivity extends BaseActivity implements IBridge{
 
     private QMUITopBarLayout topBarLayout;
     private QMUIWebViewContainer webViewContainer;
@@ -29,6 +29,9 @@ public class DefaultWebViewActivity extends BaseActivity {
         topBarLayout = findViewById(R.id.topBarLayout);
         webViewContainer = findViewById(R.id.webViewContainer);
         defaultWebView = new DefaultWebView(this);
+        defaultWebView.setWebViewClient(new DefaultWebViewClient(defaultWebView));
+        defaultWebView.setWebChromeClient(new DefaultWebChromeClient(this));
+        webViewContainer.addWebView(defaultWebView,true);
     }
 
     private void parseWindowHolder(){
@@ -44,5 +47,15 @@ public class DefaultWebViewActivity extends BaseActivity {
     public static void start(Context context){
         Intent intent = new Intent(context,DefaultWebViewActivity.class);
         context.startActivity(intent);
+    }
+
+    @Override
+    public void updateTitle(String title) {
+
+    }
+
+    @Override
+    public void onProgress(int progress) {
+
     }
 }

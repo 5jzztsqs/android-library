@@ -26,7 +26,6 @@ public class DefaultWebView extends BaseWebView {
         this.activity = (AppCompatActivity) context;
     }
 
-
     @Override
     public WebViewClient createWebViewClient() {
         return new WebViewClient();
@@ -34,6 +33,7 @@ public class DefaultWebView extends BaseWebView {
 
     @Override
     public WebChromeClient createWebChromeClient() {
-        return new DefaultWebChromeClient(activity);
+        return new WebChromeClient();
     }
+
 }

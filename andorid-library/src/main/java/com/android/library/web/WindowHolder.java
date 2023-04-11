@@ -5,6 +5,7 @@ import com.android.library.base.BaseEntity;
 public class WindowHolder extends BaseEntity {
 
     private String title;
+    private String url;
     private boolean autoTitle;
     private boolean hideTopBar;
     private boolean hideBack;
@@ -16,6 +17,14 @@ public class WindowHolder extends BaseEntity {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 
     public boolean isHideTopBar() {

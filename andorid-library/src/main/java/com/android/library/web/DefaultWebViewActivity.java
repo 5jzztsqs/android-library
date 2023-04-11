@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.alibaba.fastjson.JSON;
 import com.android.library.R;
 import com.android.library.base.BaseActivity;
 import com.qmuiteam.qmui.widget.QMUITopBarLayout;
@@ -15,14 +16,15 @@ public class DefaultWebViewActivity extends BaseActivity implements IBridge{
     private QMUITopBarLayout topBarLayout;
     private QMUIWebViewContainer webViewContainer;
     private DefaultWebView defaultWebView;
-
+    private WindowHolder windowHolder;
     private static final String KET_WINDOW_HOLDER = "windowHolder";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_web);
         initViews();
-        parseWindowHolder();
+        parseParams();
+        loadWeb();
     }
 
     private void initViews(){
@@ -34,18 +36,28 @@ public class DefaultWebViewActivity extends BaseActivity implements IBridge{
         webViewContainer.addWebView(defaultWebView,true);
     }
 
-    private void parseWindowHolder(){
+    private void parseParams(){
         Intent intent = getIntent();
         if(intent != null && intent.hasExtra(KET_WINDOW_HOLDER)){
-            WindowHolder windowHolder = (WindowHolder) intent.getSerializableExtra(KET_WINDOW_HOLDER);
-            if(windowHolder != null){
-
+            String holderJSON = intent.getStringExtra(KET_WINDOW_HOLDER);
+            if(holderJSON != null){
+                windowHolder = JSON.parseObject(holderJSON, WindowHolder.class);
             }
         }
 
     }
-    public static void start(Context context){
+
+    private void loadWeb(){
+        if(windowHolder != null){
+            if(!windowHolder.isAutoTitle()){
+                windowHolder.setTitle(windowHolder.getTitle());
+            }
+            defaultWebView.loadUrl(windowHolder.getUrl());
+        }
+    }
+    public static void start(Context context,String windowHolderJSON){
         Intent intent = new Intent(context,DefaultWebViewActivity.class);
+        intent.putExtra(KET_WINDOW_HOLDER,windowHolderJSON);
         context.startActivity(intent);
     }
 
@@ -58,4 +70,20 @@ public class DefaultWebViewActivity extends BaseActivity implements IBridge{
     public void onProgress(int progress) {
 
     }
+
+    @Override
+    public void onPageStarted() {
+
+    }
+
+    @Override
+    public void onPageFinished() {
+
+    }
+
+    @Override
+    public void onReceivedError(int errorCode, String description, String failingUrl) {
+
+    }
+
 }

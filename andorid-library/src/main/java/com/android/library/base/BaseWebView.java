@@ -22,7 +22,6 @@ public abstract class BaseWebView extends QMUIWebView {
     public BaseWebView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         initSettings();
-        initClient();
     }
 
     private void initSettings(){
@@ -38,12 +37,8 @@ public abstract class BaseWebView extends QMUIWebView {
         settings.setDomStorageEnabled(true);
     }
 
-    private void initClient(){
-        setWebViewClient(createWebViewClient());
-        setWebChromeClient(createWebChromeClient());
-    }
 
-    public abstract WebViewClient createWebViewClient();
-    public abstract WebChromeClient createWebChromeClient();
+
+
 
 }

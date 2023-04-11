@@ -3,19 +3,49 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?attr/qmui_skin_support_color_background">
+    >
 
-    <com.qmuiteam.qmui.widget.webview.QMUIWebViewContainer
-        android:id="@+id/webViewContainer"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_marginTop="?attr/qmui_topbar_height"
+        >
+        <com.qmuiteam.qmui.widget.webview.QMUIWebViewContainer
+            android:id="@+id/webViewContainer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
         <ProgressBar
-            android:id="@+id/progress"
+            android:id="@+id/progressBar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             />
-    </com.qmuiteam.qmui.widget.webview.QMUIWebViewContainer>
+        <LinearLayout
+            android:id="@+id/errorView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_gravity="center"
+            android:visibility="gone"
+            android:gravity="center"
+            android:background="@color/white"
+            >
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/load_error"
+                />
+            <TextView
+                android:id="@+id/errorText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:textSize="14sp"
+                android:textColor="#707070"
+                />
+        </LinearLayout>
+    </FrameLayout>
+
 
 
     <com.qmuiteam.qmui.widget.QMUITopBarLayout

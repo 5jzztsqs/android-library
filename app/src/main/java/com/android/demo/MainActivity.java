@@ -3,13 +3,23 @@ package com.android.demo;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 
+import com.android.library.web.DefaultWebViewActivity;
 
 
 public class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(new DrawView(this));
+        setContentView(R.layout.activity_test);
+        Button button = findViewById(R.id.startWindow);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DefaultWebViewActivity.startWidthUrl(MainActivity.this,"https://cn.bing.com/");
+            }
+        });
     }
 }

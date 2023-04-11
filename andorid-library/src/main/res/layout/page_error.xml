@@ -4,29 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
-        android:id="@+id/errorView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_gravity="center"
-        android:gravity="center"
-        >
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@mipmap/load_error"
-            />
-        <TextView
-            android:id="@+id/errorText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:textSize="14sp"
-            android:textColor="#707070"
-            android:text="加载失败"
-            />
-    </LinearLayout>
+
 
 
 </FrameLayout>

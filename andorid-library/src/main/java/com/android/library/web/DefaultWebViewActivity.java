@@ -3,24 +3,33 @@ package com.android.library.web;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
 import com.android.library.R;
 import com.android.library.base.BaseActivity;
+import com.android.library.widget.ViewHelper;
+import com.blankj.utilcode.util.LogUtils;
+import com.qmuiteam.qmui.util.QMUIResHelper;
 import com.qmuiteam.qmui.widget.QMUITopBarLayout;
 import com.qmuiteam.qmui.widget.webview.QMUIWebViewContainer;
 
 
 public class DefaultWebViewActivity extends BaseActivity implements IBridge {
 
+    private static final String TAG = DefaultWebViewActivity.class.getSimpleName();
     private QMUITopBarLayout topBarLayout;
     private QMUIWebViewContainer webViewContainer;
     private DefaultWebView defaultWebView;
     private ProgressBar progressBar;
-    private LinearLayout errorView;
+    private View holderView;
+    private TextView errorText;
     private WindowHolder windowHolder;
     private static final String KET_WINDOW_HOLDER = "windowHolder";
 
@@ -36,13 +45,30 @@ public class DefaultWebViewActivity extends BaseActivity implements IBridge {
     private void initViews() {
         topBarLayout = findViewById(R.id.topBarLayout);
         webViewContainer = findViewById(R.id.webViewContainer);
-        progressBar = findViewById(R.id.progressBar);
-        errorView = findViewById(R.id.errorView);
         defaultWebView = new DefaultWebView(this);
         defaultWebView.setWebViewClient(new DefaultWebViewClient(defaultWebView));
         defaultWebView.setWebChromeClient(new DefaultWebChromeClient(this));
         webViewContainer.addWebView(defaultWebView, true);
+        FrameLayout.LayoutParams containerLp = (FrameLayout.LayoutParams) webViewContainer.getLayoutParams();
         webViewContainer.setFitsSystemWindows(true);
+        containerLp.topMargin = QMUIResHelper.getAttrDimen(this, com.qmuiteam.qmui.R.attr.qmui_topbar_height);
+        webViewContainer.setLayoutParams(containerLp);
+        holderView = getLayoutInflater().inflate(R.layout.web_holder,null);
+        errorText = holderView.findViewById(R.id.errorText);
+        holderView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String failingUrl = (String) errorText.getTag();
+                LogUtils.iTag(TAG,failingUrl);
+                defaultWebView.loadUrl(failingUrl);
+            }
+        });
+        webViewContainer.addView(holderView);
+
+        progressBar = new ProgressBar(this);
+        FrameLayout.LayoutParams lp = ViewHelper.generateWrapContentFrameLayoutLayoutParams();
+        lp.gravity = Gravity.CENTER;
+        webViewContainer.addView(progressBar,lp);
     }
 
     private void parseParams() {
@@ -67,6 +93,7 @@ public class DefaultWebViewActivity extends BaseActivity implements IBridge {
 
     @Override
     public void updateTitle(String title) {
+        LogUtils.iTag(TAG,"updateTitle:"+title);
         if(windowHolder.isAutoTitle()){
             topBarLayout.setTitle(title);
         }
@@ -74,23 +101,30 @@ public class DefaultWebViewActivity extends BaseActivity implements IBridge {
 
     @Override
     public void onProgress(int progress) {
-
+        if(progress >= 100){
+            progressBar.setVisibility(View.GONE);
+        }
     }
 
     @Override
     public void onPageStarted() {
-        errorView.setVisibility(View.GONE);
+        LogUtils.iTag(TAG,"onPageStarted");
+        holderView.setVisibility(View.GONE);
         progressBar.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void onPageFinished() {
-        progressBar.setVisibility(View.GONE);
+        LogUtils.iTag(TAG,"onPageFinished");
+
     }
 
     @Override
     public void onReceivedError(int errorCode, String description, String failingUrl) {
-        errorView.setVisibility(View.VISIBLE);
+        LogUtils.iTag(TAG,"onReceivedError:"+failingUrl);
+        holderView.setVisibility(View.VISIBLE);
+        errorText.setTag(failingUrl);
+        errorText.setText(description);
     }
 
 

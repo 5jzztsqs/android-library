@@ -51,7 +51,7 @@ public class DefaultWebViewClient extends QMUIBridgeWebViewClient {
     public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
         super.onReceivedError(view, request, error);
         if(bridge != null){
-            bridge.onReceivedError(error.getErrorCode(),error.getDescription().toString(),request.getUrl().getPath());
+            bridge.onReceivedError(error.getErrorCode(),error.getDescription().toString(),request.getUrl().toString());
         }
     }
 

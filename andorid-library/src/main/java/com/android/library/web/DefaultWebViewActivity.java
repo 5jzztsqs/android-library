@@ -2,9 +2,11 @@ package com.android.library.web;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
@@ -37,8 +39,8 @@ public class DefaultWebViewActivity extends BaseActivity implements IBridge {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_web);
-        initViews();
         parseParams();
+        initViews();
         loadWeb();
     }
 
@@ -49,10 +51,19 @@ public class DefaultWebViewActivity extends BaseActivity implements IBridge {
         defaultWebView.setWebViewClient(new DefaultWebViewClient(defaultWebView));
         defaultWebView.setWebChromeClient(new DefaultWebChromeClient(this));
         webViewContainer.addWebView(defaultWebView, true);
-        FrameLayout.LayoutParams containerLp = (FrameLayout.LayoutParams) webViewContainer.getLayoutParams();
-        webViewContainer.setFitsSystemWindows(true);
-        containerLp.topMargin = QMUIResHelper.getAttrDimen(this, com.qmuiteam.qmui.R.attr.qmui_topbar_height);
-        webViewContainer.setLayoutParams(containerLp);
+
+        if(windowHolder.isHideTopBar()){
+            topBarLayout.setFitsSystemWindows(false);
+            topBarLayout.setVisibility(View.GONE);
+        }else{
+            topBarLayout.setFitsSystemWindows(true);
+            topBarLayout.setVisibility(View.VISIBLE);
+            FrameLayout.LayoutParams containerLp = (FrameLayout.LayoutParams) webViewContainer.getLayoutParams();
+            webViewContainer.setFitsSystemWindows(true);
+            containerLp.topMargin = QMUIResHelper.getAttrDimen(this, com.qmuiteam.qmui.R.attr.qmui_topbar_height);
+            webViewContainer.setLayoutParams(containerLp);
+        }
+
         holderView = getLayoutInflater().inflate(R.layout.web_holder,null);
         errorText = holderView.findViewById(R.id.errorText);
         holderView.setOnClickListener(new View.OnClickListener() {
@@ -64,7 +75,6 @@ public class DefaultWebViewActivity extends BaseActivity implements IBridge {
             }
         });
         webViewContainer.addView(holderView);
-
         progressBar = new ProgressBar(this);
         FrameLayout.LayoutParams lp = ViewHelper.generateWrapContentFrameLayoutLayoutParams();
         lp.gravity = Gravity.CENTER;
@@ -76,11 +86,13 @@ public class DefaultWebViewActivity extends BaseActivity implements IBridge {
         if (intent != null && intent.hasExtra(KET_WINDOW_HOLDER)) {
             String holderJSON = intent.getStringExtra(KET_WINDOW_HOLDER);
             if (holderJSON != null) {
+                LogUtils.json(holderJSON);
                 windowHolder = JSON.parseObject(holderJSON, WindowHolder.class);
             } else {
                 windowHolder = new WindowHolder();
             }
         }
+
 
     }
 
@@ -143,5 +155,14 @@ public class DefaultWebViewActivity extends BaseActivity implements IBridge {
         context.startActivity(intent);
     }
 
-
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if(keyCode == KeyEvent.KEYCODE_BACK){
+            if(defaultWebView.canGoBack()){
+                defaultWebView.goBack();
+                return true;
+            }
+        }
+        return super.onKeyDown(keyCode, event);
+    }
 }

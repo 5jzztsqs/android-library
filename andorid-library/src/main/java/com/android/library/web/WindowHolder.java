@@ -6,6 +6,7 @@ public class WindowHolder extends BaseEntity {
 
     private String title;
     private String url;
+    private String topBarColor;
     private boolean autoTitle;
     private boolean hideTopBar;
     private boolean hideBack;
@@ -57,5 +58,13 @@ public class WindowHolder extends BaseEntity {
 
     public void setHideBack(boolean hideBack) {
         this.hideBack = hideBack;
+    }
+
+    public String getTopBarColor() {
+        return topBarColor;
+    }
+
+    public void setTopBarColor(String topBarColor) {
+        this.topBarColor = topBarColor;
     }
 }

@@ -1,7 +1,11 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="BaseTheme" parent="QMUI.Compat.NoActionBar">
-        <item name="QMUITopBarStyle">@style/BaseTopBar</item>
+        <item name="qmui_skin_support_topbar_bg">@color/app_primary_color</item>
+        <item name="qmui_skin_support_topbar_separator_color">?attr/qmui_skin_support_color_separator</item>
+        <item name="qmui_skin_support_topbar_title_color">@color/qmui_config_color_white</item>
+        <item name="qmui_skin_support_topbar_subtitle_color">@color/qmui_config_color_white</item>
+<!--        <item name="QMUITopBarStyle">@style/BaseTopBar</item>-->
     </style>
 
     <style name="BaseTopBar" parent="QMUI.TopBar">

@@ -3,4 +3,9 @@
     <style name="ApplicationTheme" parent="BaseTheme">
 
     </style>
+
+    <style name="FullScreenTheme" parent="ApplicationTheme">
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowBackground">@color/app_primary_color</item>
+    </style>
 </resources>

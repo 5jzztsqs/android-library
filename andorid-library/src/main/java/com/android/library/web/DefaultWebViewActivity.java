@@ -86,7 +86,7 @@ public class DefaultWebViewActivity extends BaseActivity implements IBridge {
         if (intent != null && intent.hasExtra(KET_WINDOW_HOLDER)) {
             String holderJSON = intent.getStringExtra(KET_WINDOW_HOLDER);
             if (holderJSON != null) {
-                LogUtils.json(holderJSON);
+                WebLog.json(holderJSON);
                 windowHolder = JSON.parseObject(holderJSON, WindowHolder.class);
             } else {
                 windowHolder = new WindowHolder();
@@ -105,7 +105,7 @@ public class DefaultWebViewActivity extends BaseActivity implements IBridge {
 
     @Override
     public void updateTitle(String title) {
-        LogUtils.iTag(TAG,"updateTitle:"+title);
+        WebLog.i("updateTitle:"+title);
         if(windowHolder.isAutoTitle()){
             topBarLayout.setTitle(title);
         }
@@ -120,20 +120,20 @@ public class DefaultWebViewActivity extends BaseActivity implements IBridge {
 
     @Override
     public void onPageStarted() {
-        LogUtils.iTag(TAG,"onPageStarted");
+        WebLog.i("onPageStarted");
         holderView.setVisibility(View.GONE);
         progressBar.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void onPageFinished() {
-        LogUtils.iTag(TAG,"onPageFinished");
+        WebLog.i("onPageFinished");
 
     }
 
     @Override
     public void onReceivedError(int errorCode, String description, String failingUrl) {
-        LogUtils.iTag(TAG,"onReceivedError:"+failingUrl);
+        WebLog.i("onReceivedError:"+failingUrl);
         holderView.setVisibility(View.VISIBLE);
         errorText.setTag(failingUrl);
         errorText.setText(description);

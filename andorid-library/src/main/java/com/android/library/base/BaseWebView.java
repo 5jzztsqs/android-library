@@ -30,6 +30,7 @@ public abstract class BaseWebView extends QMUIWebView {
         settings.setJavaScriptEnabled(true);
         settings.setAllowContentAccess(true);
         settings.setUseWideViewPort(true);
+        settings.setAppCacheEnabled(true);
        // settings.setLoadWithOverviewMode(true);
         settings.setAllowFileAccess(true);
         settings.setDatabaseEnabled(true);

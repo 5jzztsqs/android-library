@@ -122,6 +122,7 @@ public class DefaultWebChromeClient extends WebChromeClient {
                                 String path = result.get(i).getRealPath();
                                 WebLog.i(path);
                                 File file = new File(path);
+                                WebLog.i("provider:"+activity.getPackageName() + ".FileProvider");
                                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                                     uri[i] = FileProvider.getUriForFile(activity, activity.getPackageName() + ".FileProvider", file);
                                 } else {

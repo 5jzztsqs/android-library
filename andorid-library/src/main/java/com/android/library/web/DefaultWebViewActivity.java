@@ -51,13 +51,20 @@ public class DefaultWebViewActivity extends BaseActivity implements IBridge {
         defaultWebView.setWebViewClient(new DefaultWebViewClient(defaultWebView));
         defaultWebView.setWebChromeClient(new DefaultWebChromeClient(this));
         webViewContainer.addWebView(defaultWebView, true);
-
         if(windowHolder.isHideTopBar()){
             topBarLayout.setFitsSystemWindows(false);
             topBarLayout.setVisibility(View.GONE);
         }else{
             topBarLayout.setFitsSystemWindows(true);
             topBarLayout.setVisibility(View.VISIBLE);
+            if(windowHolder.isCanGoBack()){
+                topBarLayout.addLeftBackImageButton().setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        finish();
+                    }
+                });
+            }
             FrameLayout.LayoutParams containerLp = (FrameLayout.LayoutParams) webViewContainer.getLayoutParams();
             webViewContainer.setFitsSystemWindows(true);
             containerLp.topMargin = QMUIResHelper.getAttrDimen(this, com.qmuiteam.qmui.R.attr.qmui_topbar_height);

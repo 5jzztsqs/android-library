@@ -13,10 +13,11 @@ import com.android.library.web.WindowHolder;
 
 public class LaunchActivity extends BaseActivity {
 
-    private static final long MILLIS_IN_FUTURE = 3000;
+    private static final long MILLIS_IN_FUTURE = 2000;
     private static final long COUNT_DOWN_INTERVAL = 1000;
     private CountDownTimer countDownTimer;
     private String url = "http://192.168.1.81:8080/#/";
+//    private String url = "https://nutui.jd.com/demo.html";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,6 +36,7 @@ public class LaunchActivity extends BaseActivity {
                 windowHolder.setHideTopBar(true);
                 windowHolder.setUrl(url);
                 DefaultWebViewActivity.start(LaunchActivity.this,windowHolder.toJSONString());
+                finish();
             }
         };
         countDownTimer.start();

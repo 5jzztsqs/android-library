@@ -9,6 +9,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.alibaba.fastjson.JSON;
+import com.blankj.utilcode.util.ResourceUtils;
 import com.qmuiteam.qmui.widget.webview.QMUIBridgeWebViewClient;
 import com.qmuiteam.qmui.widget.webview.QMUIWebViewBridgeHandler;
 
@@ -18,10 +20,11 @@ import java.util.List;
 public class DefaultWebViewClient extends QMUIBridgeWebViewClient {
     private AppCompatActivity activity;
     private IBridge bridge;
-    public DefaultWebViewClient(WebView webView){
-        this(false,false,new BridgeHandler(webView));
+
+    public DefaultWebViewClient(WebView webView) {
+        this(false, false, new BridgeHandler(webView));
         this.activity = (AppCompatActivity) webView.getContext();
-        if(activity instanceof IBridge){
+        if (activity instanceof IBridge) {
             this.bridge = (IBridge) activity;
         }
     }
@@ -34,7 +37,7 @@ public class DefaultWebViewClient extends QMUIBridgeWebViewClient {
     @Override
     public void onPageStarted(WebView view, String url, @Nullable Bitmap favicon) {
         super.onPageStarted(view, url, favicon);
-        if(bridge != null){
+        if (bridge != null) {
             bridge.onPageStarted();
         }
     }
@@ -42,21 +45,25 @@ public class DefaultWebViewClient extends QMUIBridgeWebViewClient {
     @Override
     public void onPageFinished(WebView view, String url) {
         super.onPageFinished(view, url);
-        if(bridge != null){
+        if (bridge != null) {
             bridge.onPageFinished();
         }
+        BridgeCmdHandler.injectJS(activity,view);
     }
+
+
 
     @Override
     public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
         super.onReceivedError(view, request, error);
-        if(bridge != null){
-            bridge.onReceivedError(error.getErrorCode(),error.getDescription().toString(),request.getUrl().toString());
+        if (bridge != null) {
+            bridge.onReceivedError(error.getErrorCode(), error.getDescription().toString(), request.getUrl().toString());
         }
     }
 
-    private static class BridgeHandler extends QMUIWebViewBridgeHandler{
+    private static class BridgeHandler extends QMUIWebViewBridgeHandler {
         private BridgeCmdHandler bridgeCmdHandler;
+
         public BridgeHandler(@NonNull WebView webView) {
             super(webView);
             bridgeCmdHandler = new BridgeCmdHandler((AppCompatActivity) webView.getContext());

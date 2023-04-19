@@ -4,12 +4,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.FrameLayout;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -17,8 +15,12 @@ import com.alibaba.fastjson.JSON;
 import com.android.library.R;
 import com.android.library.base.BaseActivity;
 import com.android.library.widget.ViewHelper;
+import com.blankj.utilcode.util.BarUtils;
+import com.blankj.utilcode.util.DeviceUtils;
 import com.blankj.utilcode.util.LogUtils;
 import com.qmuiteam.qmui.util.QMUIResHelper;
+import com.qmuiteam.qmui.util.QMUIStatusBarHelper;
+import com.qmuiteam.qmui.util.QMUIViewHelper;
 import com.qmuiteam.qmui.widget.QMUITopBarLayout;
 import com.qmuiteam.qmui.widget.webview.QMUIWebViewContainer;
 
@@ -28,7 +30,7 @@ public class DefaultWebViewActivity extends BaseActivity implements IBridge {
     private static final String TAG = DefaultWebViewActivity.class.getSimpleName();
     private QMUITopBarLayout topBarLayout;
     private QMUIWebViewContainer webViewContainer;
-    private DefaultWebView defaultWebView;
+    private BridgeWebView defaultWebView;
     private ProgressBar progressBar;
     private View holderView;
     private TextView errorText;
@@ -47,9 +49,9 @@ public class DefaultWebViewActivity extends BaseActivity implements IBridge {
     private void initViews() {
         topBarLayout = findViewById(R.id.topBarLayout);
         webViewContainer = findViewById(R.id.webViewContainer);
-        defaultWebView = new DefaultWebView(this);
-        defaultWebView.setWebViewClient(new DefaultWebViewClient(defaultWebView));
-        defaultWebView.setWebChromeClient(new DefaultWebChromeClient(this));
+        defaultWebView = new BridgeWebView(this);
+        defaultWebView.setWebViewClient(new BridgeWebViewClient(defaultWebView));
+        defaultWebView.setWebChromeClient(new BridgeWebChromeClient(this));
         webViewContainer.addWebView(defaultWebView, true);
         if(windowHolder.isHideTopBar()){
             topBarLayout.setFitsSystemWindows(false);
@@ -86,6 +88,13 @@ public class DefaultWebViewActivity extends BaseActivity implements IBridge {
         FrameLayout.LayoutParams lp = ViewHelper.generateWrapContentFrameLayoutLayoutParams();
         lp.gravity = Gravity.CENTER;
         webViewContainer.addView(progressBar,lp);
+
+        if(windowHolder.isShowStatusBar()){
+            webViewContainer.setFitsSystemWindows(true);
+            if(windowHolder.getStatusBarColor() != null){
+                BarUtils.setStatusBarColor(this,Color.parseColor(windowHolder.getStatusBarColor()));
+            }
+        }
     }
 
     private void parseParams() {

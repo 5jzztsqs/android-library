@@ -9,19 +9,16 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.alibaba.fastjson.JSON;
-import com.blankj.utilcode.util.ResourceUtils;
 import com.qmuiteam.qmui.widget.webview.QMUIBridgeWebViewClient;
 import com.qmuiteam.qmui.widget.webview.QMUIWebViewBridgeHandler;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class DefaultWebViewClient extends QMUIBridgeWebViewClient {
+public class BridgeWebViewClient extends QMUIBridgeWebViewClient {
     private AppCompatActivity activity;
     private IBridge bridge;
 
-    public DefaultWebViewClient(WebView webView) {
+    public BridgeWebViewClient(WebView webView) {
         this(false, false, new BridgeHandler(webView));
         this.activity = (AppCompatActivity) webView.getContext();
         if (activity instanceof IBridge) {
@@ -29,7 +26,7 @@ public class DefaultWebViewClient extends QMUIBridgeWebViewClient {
         }
     }
 
-    private DefaultWebViewClient(boolean needDispatchSafeAreaInset, boolean disableVideoFullscreenBtnAlways, @NonNull QMUIWebViewBridgeHandler bridgeHandler) {
+    private BridgeWebViewClient(boolean needDispatchSafeAreaInset, boolean disableVideoFullscreenBtnAlways, @NonNull QMUIWebViewBridgeHandler bridgeHandler) {
         super(needDispatchSafeAreaInset, disableVideoFullscreenBtnAlways, bridgeHandler);
     }
 

@@ -17,21 +17,19 @@ import androidx.core.content.FileProvider;
 
 import com.alibaba.fastjson.JSON;
 import com.android.library.glide.GlideEngine;
-import com.blankj.utilcode.util.UriUtils;
 import com.luck.picture.lib.basic.PictureSelector;
 import com.luck.picture.lib.config.SelectMimeType;
-import com.luck.picture.lib.engine.ImageEngine;
 import com.luck.picture.lib.entity.LocalMedia;
 import com.luck.picture.lib.interfaces.OnResultCallbackListener;
 
 import java.io.File;
 import java.util.ArrayList;
 
-public class DefaultWebChromeClient extends WebChromeClient {
+public class BridgeWebChromeClient extends WebChromeClient {
     private AppCompatActivity activity;
     private IBridge bridge;
 
-    public DefaultWebChromeClient(AppCompatActivity activity) {
+    public BridgeWebChromeClient(AppCompatActivity activity) {
         this.activity = activity;
         if (activity instanceof IBridge) {
             this.bridge = (IBridge) activity;

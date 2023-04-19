@@ -7,7 +7,9 @@ public class WindowHolder extends BaseEntity {
     private String title;
     private String url;
     private String topBarColor;
+    private String statusBarColor;
     private boolean autoTitle;
+    private boolean showStatusBar;
     private boolean hideTopBar;
     private boolean hideBack;
     private boolean canGoBack = true;
@@ -66,5 +68,21 @@ public class WindowHolder extends BaseEntity {
 
     public void setTopBarColor(String topBarColor) {
         this.topBarColor = topBarColor;
+    }
+
+    public boolean isShowStatusBar() {
+        return showStatusBar;
+    }
+
+    public void setShowStatusBar(boolean showStatusBar) {
+        this.showStatusBar = showStatusBar;
+    }
+
+    public String getStatusBarColor() {
+        return statusBarColor;
+    }
+
+    public void setStatusBarColor(String statusBarColor) {
+        this.statusBarColor = statusBarColor;
     }
 }

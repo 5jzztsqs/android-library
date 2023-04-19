@@ -6,17 +6,17 @@ import android.util.AttributeSet;
 import com.android.library.base.BaseWebView;
 
 
-public class DefaultWebView extends BaseWebView {
+public class BridgeWebView extends BaseWebView {
 
-    public DefaultWebView(Context context) {
+    public BridgeWebView(Context context) {
         this(context,null);
     }
 
-    public DefaultWebView(Context context, AttributeSet attrs) {
+    public BridgeWebView(Context context, AttributeSet attrs) {
         this(context, attrs,0);
     }
 
-    public DefaultWebView(Context context, AttributeSet attrs, int defStyleAttr) {
+    public BridgeWebView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
 

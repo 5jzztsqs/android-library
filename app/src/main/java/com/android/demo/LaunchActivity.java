@@ -17,7 +17,8 @@ public class LaunchActivity extends BaseActivity {
 //    private String url = "http://192.168.1.81:8080/#/";
 //    private String url = "https://nutui.jd.com/demo.html";
  //   private String url = "https://m.baidu.com";
-    private String url = "https://www.toutiao.com/?source=m_redirect";
+ //   private String url = "https://www.toutiao.com/?source=m_redirect";
+    private String url = "https://m.jd.com/";
 //   private String url = "http://test.imydao.cn:15888/standardapp/#/pages/login/login";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,10 +34,10 @@ public class LaunchActivity extends BaseActivity {
             @Override
             public void onFinish() {
                 WindowHolder windowHolder = new WindowHolder();
-//                windowHolder.setShowStatusBar(true);
-//                windowHolder.setStatusBarColor("#1677ff");
-                windowHolder.setAutoTitle(true);
-             //   windowHolder.setHideTopBar(true);
+                windowHolder.setShowStatusBar(true);
+               // windowHolder.setStatusBarColor("#c82519");
+     //           windowHolder.setAutoTitle(true);
+               windowHolder.setHideTopBar(true);
                 windowHolder.setUrl(url);
                 BridgeWebViewActivity.start(LaunchActivity.this,windowHolder.toJSONString());
                 finish();

@@ -11,6 +11,8 @@ import androidx.core.content.FileProvider;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.android.library.glide.GlideEngine;
+import com.blankj.utilcode.util.FileUtils;
+import com.blankj.utilcode.util.ResourceUtils;
 import com.luck.picture.lib.basic.PictureSelector;
 import com.luck.picture.lib.config.SelectMimeType;
 import com.luck.picture.lib.entity.LocalMedia;
@@ -157,7 +159,6 @@ public class BridgeCmdHandler {
 
     public static JSONObject getWindowInfo(AppCompatActivity activity) {
         JSONObject jsonObject = new JSONObject();
-
         jsonObject.put("statusBarHeight", QMUIStatusBarHelper.getStatusbarHeight(activity));
         jsonObject.put("isFullScreen", QMUIStatusBarHelper.isFullScreen(activity));
         jsonObject.put("screenWidth", QMUIDisplayHelper.getScreenWidth(activity));
@@ -168,10 +169,16 @@ public class BridgeCmdHandler {
     public static void injectJS(AppCompatActivity activity, WebView webView) {
         String windowInfoJSON = "'" + getWindowInfo(activity).toJSONString() + "'";
         WebLog.json(windowInfoJSON);
-        String jsCode = "localStorage.setItem(\"windowInfo\", " + windowInfoJSON + ");";
-        String injectJS = "(function(){" + jsCode + "})()";
+        String vConsole = ResourceUtils.readAssets2String("vconsole.min.js");
+        webView.evaluateJavascript(vConsole, null);
+        String jsCode = "localStorage.setItem(\"windowInfo\", " + windowInfoJSON + ");const vConsole = new VConsole();";
+        executeJS(webView,jsCode);
+    }
+
+
+    public static void executeJS(WebView webView,String js){
+        String injectJS = "(function(){" + js + "})()";
         WebLog.i(injectJS);
         webView.evaluateJavascript(injectJS, null);
     }
-
 }

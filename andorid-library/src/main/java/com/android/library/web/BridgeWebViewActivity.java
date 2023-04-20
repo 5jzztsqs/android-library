@@ -99,7 +99,9 @@ public class BridgeWebViewActivity extends BaseActivity implements IBridge {
 
         if(windowHolder.isShowStatusBar()){
             webViewContainer.setFitsSystemWindows(true);
-            if(windowHolder.getStatusBarColor() != null){
+            if(windowHolder.getStatusBarColor() == null){
+                BarUtils.setStatusBarColor(this,Color.BLACK);
+            }else{
                 BarUtils.setStatusBarColor(this,Color.parseColor(windowHolder.getStatusBarColor()));
             }
         }

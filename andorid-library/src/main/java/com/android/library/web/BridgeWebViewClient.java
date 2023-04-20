@@ -1,8 +1,10 @@
 package com.android.library.web;
 
 import android.graphics.Bitmap;
+import android.view.KeyEvent;
 import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
+import android.webkit.WebResourceResponse;
 import android.webkit.WebView;
 
 import androidx.annotation.NonNull;
@@ -15,6 +17,8 @@ import com.qmuiteam.qmui.widget.webview.QMUIWebViewBridgeHandler;
 import java.util.List;
 
 public class BridgeWebViewClient extends QMUIBridgeWebViewClient {
+    private static final String SCHEMA_HTTP = "http://";
+    private static final String SCHEMA_HTTPS = "https://";
     private AppCompatActivity activity;
     private IBridge bridge;
 
@@ -30,6 +34,31 @@ public class BridgeWebViewClient extends QMUIBridgeWebViewClient {
         super(needDispatchSafeAreaInset, disableVideoFullscreenBtnAlways, bridgeHandler);
     }
 
+    @Override
+    protected boolean onShouldOverrideUrlLoading(WebView view, String url) {
+        if(url.toLowerCase().startsWith(SCHEMA_HTTP) || url.toLowerCase().startsWith(SCHEMA_HTTPS)){
+            return super.onShouldOverrideUrlLoading(view, url);
+        }else{
+            return true;
+        }
+    }
+
+    @Override
+    protected boolean onShouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
+        String url = request.getUrl().toString();
+        if(url.toLowerCase().startsWith(SCHEMA_HTTP) || url.toLowerCase().startsWith(SCHEMA_HTTPS)){
+            return super.onShouldOverrideUrlLoading(view, url);
+        }else{
+            return true;
+        }
+    }
+
+
+    @Nullable
+    @Override
+    public WebResourceResponse shouldInterceptRequest(WebView view, WebResourceRequest request) {
+        return super.shouldInterceptRequest(view, request);
+    }
 
     @Override
     public void onPageStarted(WebView view, String url, @Nullable Bitmap favicon) {
@@ -53,8 +82,14 @@ public class BridgeWebViewClient extends QMUIBridgeWebViewClient {
     @Override
     public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
         super.onReceivedError(view, request, error);
+        int errorCode = error.getErrorCode();
+        String description = error.getDescription().toString();
+        String url = request.getUrl().toString();
+        WebLog.e("onReceivedError:code="+errorCode+";description="+description+";url="+url);
         if (bridge != null) {
-            bridge.onReceivedError(error.getErrorCode(), error.getDescription().toString(), request.getUrl().toString());
+            if(errorCode == ERROR_CONNECT && description.contains("ERR_CONNECTION_REFUSED")){
+                bridge.onReceivedError(error.getErrorCode(), "无法连接到该网站", request.getUrl().toString());
+            }
         }
     }
 

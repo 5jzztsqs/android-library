@@ -34,7 +34,7 @@ public abstract class BaseWebView extends QMUIWebView {
        // settings.setLoadWithOverviewMode(true);
         settings.setAllowFileAccess(true);
         settings.setDatabaseEnabled(true);
-        settings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
+        settings.setCacheMode(WebSettings.LOAD_NO_CACHE);
         settings.setTextZoom(100);
         settings.setDomStorageEnabled(true);
     }

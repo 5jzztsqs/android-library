@@ -10,6 +10,11 @@ public class WebLog {
         LogUtils.iTag(TAG,content);
     }
 
+
+    public static void e(Object content){
+        LogUtils.eTag(TAG,content);
+    }
+
     public static void json(final Object content) {
         LogUtils.json(content);
     }

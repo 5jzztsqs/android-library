@@ -35,6 +35,7 @@ public class DefaultWebViewActivity extends BaseActivity implements IBridge {
     private View holderView;
     private TextView errorText;
     private WindowHolder windowHolder;
+    private boolean receiveError;
     private static final String KET_WINDOW_HOLDER = "windowHolder";
 
     @Override
@@ -84,6 +85,7 @@ public class DefaultWebViewActivity extends BaseActivity implements IBridge {
             }
         });
         webViewContainer.addView(holderView);
+        holderView.setVisibility(View.GONE);
         progressBar = new ProgressBar(this);
         FrameLayout.LayoutParams lp = ViewHelper.generateWrapContentFrameLayoutLayoutParams();
         lp.gravity = Gravity.CENTER;
@@ -136,6 +138,7 @@ public class DefaultWebViewActivity extends BaseActivity implements IBridge {
 
     @Override
     public void onPageStarted() {
+        receiveError = false;
         WebLog.i("onPageStarted");
         holderView.setVisibility(View.GONE);
         progressBar.setVisibility(View.VISIBLE);
@@ -144,12 +147,15 @@ public class DefaultWebViewActivity extends BaseActivity implements IBridge {
     @Override
     public void onPageFinished() {
         WebLog.i("onPageFinished");
-
+        if(!receiveError){
+            defaultWebView.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
     public void onReceivedError(int errorCode, String description, String failingUrl) {
-        WebLog.i("onReceivedError:"+failingUrl);
+        receiveError = true;
+        defaultWebView.setVisibility(View.INVISIBLE);
         holderView.setVisibility(View.VISIBLE);
         errorText.setTag(failingUrl);
         errorText.setText(description);

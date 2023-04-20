@@ -8,7 +8,7 @@
            android:layout_width="wrap_content"
            android:layout_height="wrap_content"
            android:textColor="@color/white"
-           android:text="欢迎使用"
            android:textSize="18sp"
+           android:text="欢迎使用"
            android:layout_gravity="center"/>
 </com.qmuiteam.qmui.widget.QMUIWindowInsetLayout>

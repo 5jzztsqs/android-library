@@ -2,7 +2,9 @@ package com.android.library.web;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -11,23 +13,22 @@ import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import androidx.core.content.ContextCompat;
+
 import com.alibaba.fastjson.JSON;
 import com.android.library.R;
 import com.android.library.base.BaseActivity;
 import com.android.library.widget.ViewHelper;
 import com.blankj.utilcode.util.BarUtils;
-import com.blankj.utilcode.util.DeviceUtils;
 import com.blankj.utilcode.util.LogUtils;
 import com.qmuiteam.qmui.util.QMUIResHelper;
-import com.qmuiteam.qmui.util.QMUIStatusBarHelper;
-import com.qmuiteam.qmui.util.QMUIViewHelper;
 import com.qmuiteam.qmui.widget.QMUITopBarLayout;
 import com.qmuiteam.qmui.widget.webview.QMUIWebViewContainer;
 
 
-public class DefaultWebViewActivity extends BaseActivity implements IBridge {
+public class BridgeWebViewActivity extends BaseActivity implements IBridge {
 
-    private static final String TAG = DefaultWebViewActivity.class.getSimpleName();
+    private static final String TAG = BridgeWebViewActivity.class.getSimpleName();
     private QMUITopBarLayout topBarLayout;
     private QMUIWebViewContainer webViewContainer;
     private BridgeWebView defaultWebView;
@@ -64,6 +65,10 @@ public class DefaultWebViewActivity extends BaseActivity implements IBridge {
                 topBarLayout.addLeftBackImageButton().setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        if(defaultWebView.canGoBack()){
+                            defaultWebView.goBack();
+                            return;
+                        }
                         finish();
                     }
                 });
@@ -87,6 +92,7 @@ public class DefaultWebViewActivity extends BaseActivity implements IBridge {
         webViewContainer.addView(holderView);
         holderView.setVisibility(View.GONE);
         progressBar = new ProgressBar(this);
+        progressBar.setIndeterminateTintList(ColorStateList.valueOf(ContextCompat.getColor(this,R.color.app_primary_color)));
         FrameLayout.LayoutParams lp = ViewHelper.generateWrapContentFrameLayoutLayoutParams();
         lp.gravity = Gravity.CENTER;
         webViewContainer.addView(progressBar,lp);
@@ -154,22 +160,22 @@ public class DefaultWebViewActivity extends BaseActivity implements IBridge {
 
     @Override
     public void onReceivedError(int errorCode, String description, String failingUrl) {
-        receiveError = true;
-        defaultWebView.setVisibility(View.INVISIBLE);
-        holderView.setVisibility(View.VISIBLE);
-        errorText.setTag(failingUrl);
-        errorText.setText(description);
+            receiveError = true;
+            defaultWebView.setVisibility(View.INVISIBLE);
+            holderView.setVisibility(View.VISIBLE);
+            errorText.setTag(failingUrl);
+            errorText.setText(description);
     }
 
 
     public static void start(Context context, String windowHolderJSON) {
-        Intent intent = new Intent(context, DefaultWebViewActivity.class);
+        Intent intent = new Intent(context, BridgeWebViewActivity.class);
         intent.putExtra(KET_WINDOW_HOLDER, windowHolderJSON);
         context.startActivity(intent);
     }
 
     public static void startWidthUrl(Context context, String url) {
-        Intent intent = new Intent(context, DefaultWebViewActivity.class);
+        Intent intent = new Intent(context, BridgeWebViewActivity.class);
         WindowHolder windowHolder = new WindowHolder();
         windowHolder.setUrl(url);
         windowHolder.setAutoTitle(true);

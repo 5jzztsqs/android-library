@@ -1,48 +1,27 @@
 package com.android.library.web;
 
-import android.content.Context;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
-import android.util.Base64;
-import android.webkit.MimeTypeMap;
 import android.webkit.WebView;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.camera.core.internal.utils.ImageUtil;
 import androidx.core.content.FileProvider;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.android.library.glide.GlideEngine;
-import com.blankj.utilcode.util.DeviceUtils;
-import com.blankj.utilcode.util.EncodeUtils;
-import com.blankj.utilcode.util.FileUtils;
-import com.blankj.utilcode.util.ImageUtils;
-import com.blankj.utilcode.util.ResourceUtils;
 import com.luck.picture.lib.basic.PictureSelector;
 import com.luck.picture.lib.config.SelectMimeType;
 import com.luck.picture.lib.entity.LocalMedia;
 import com.luck.picture.lib.interfaces.OnResultCallbackListener;
-import com.luck.picture.lib.utils.BitmapUtils;
-import com.luck.picture.lib.utils.PictureFileUtils;
 import com.qmuiteam.qmui.util.QMUIDisplayHelper;
 import com.qmuiteam.qmui.util.QMUIStatusBarHelper;
 import com.qmuiteam.qmui.widget.webview.QMUIWebViewBridgeHandler;
 
-import org.json.JSONException;
-
 import java.io.File;
-import java.nio.file.Files;
-import java.nio.file.attribute.BasicFileAttributes;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.List;
-
-import me.bzcoder.easyglide.EasyGlide;
 
 public class BridgeCmdHandler {
     private static final String CMD_STATUES_BAR = "statusBar";
@@ -112,7 +91,7 @@ public class BridgeCmdHandler {
     }
 
     private void handlerNewWindow(JSONObject jsonObject, QMUIWebViewBridgeHandler.MessageFinishCallback callback) {
-        DefaultWebViewActivity.start(activity, JSON.toJSONString(jsonObject));
+        BridgeWebViewActivity.start(activity, JSON.toJSONString(jsonObject));
     }
 
     private void handlerPickFile(JSONObject jsonObject, QMUIWebViewBridgeHandler.MessageFinishCallback callback) {

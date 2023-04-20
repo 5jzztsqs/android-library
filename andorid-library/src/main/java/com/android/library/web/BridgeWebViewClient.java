@@ -1,6 +1,7 @@
 package com.android.library.web;
 
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.view.KeyEvent;
 import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
@@ -11,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.alibaba.fastjson.JSONObject;
 import com.qmuiteam.qmui.widget.webview.QMUIBridgeWebViewClient;
 import com.qmuiteam.qmui.widget.webview.QMUIWebViewBridgeHandler;
 
@@ -84,10 +86,18 @@ public class BridgeWebViewClient extends QMUIBridgeWebViewClient {
         super.onReceivedError(view, request, error);
         int errorCode = error.getErrorCode();
         String description = error.getDescription().toString();
+        String loadUrlHost = Uri.parse(view.getUrl()).getHost();
+        String errorUrlHost = request.getUrl().getHost();
         String url = request.getUrl().toString();
-        WebLog.e("onReceivedError:code="+errorCode+";description="+description+";url="+url);
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("errorCode",errorCode);
+        jsonObject.put("loadUrlHost",loadUrlHost);
+        jsonObject.put("errorUrlHost",errorUrlHost);
+        jsonObject.put("description",description);
+        jsonObject.put("errorUrl",url);
+        WebLog.json(jsonObject);
         if (bridge != null) {
-            if(errorCode == ERROR_CONNECT && description.contains("ERR_CONNECTION_REFUSED")){
+            if(errorCode == ERROR_CONNECT && loadUrlHost.equals(errorUrlHost) && description.contains("ERR_CONNECTION_REFUSED")){
                 bridge.onReceivedError(error.getErrorCode(), "无法连接到该网站", request.getUrl().toString());
             }
         }

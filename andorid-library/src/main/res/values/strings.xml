@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">AndroidLibrary</string>
     <string name="refresh">刷新</string>
+    <string name="webview_third_app_open">是否打开该应用？</string>
 </resources>

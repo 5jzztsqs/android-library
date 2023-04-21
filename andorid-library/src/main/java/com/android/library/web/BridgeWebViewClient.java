@@ -1,10 +1,10 @@
 package com.android.library.web;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.net.http.SslError;
-import android.view.KeyEvent;
 import android.webkit.SslErrorHandler;
 import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
@@ -17,10 +17,13 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.alibaba.fastjson.JSONObject;
 import com.blankj.utilcode.util.ResourceUtils;
+import com.blankj.utilcode.util.SnackbarUtils;
 import com.blankj.utilcode.util.ThreadUtils;
+import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
 import com.qmuiteam.qmui.widget.webview.QMUIBridgeWebViewClient;
 import com.qmuiteam.qmui.widget.webview.QMUIWebViewBridgeHandler;
 
+import java.nio.file.WatchEvent;
 import java.util.List;
 
 public class BridgeWebViewClient extends QMUIBridgeWebViewClient {
@@ -41,11 +44,15 @@ public class BridgeWebViewClient extends QMUIBridgeWebViewClient {
         super(needDispatchSafeAreaInset, disableVideoFullscreenBtnAlways, bridgeHandler);
     }
 
+
+
     @Override
     protected boolean onShouldOverrideUrlLoading(WebView view, String url) {
         if (url.toLowerCase().startsWith(SCHEMA_HTTP) || url.toLowerCase().startsWith(SCHEMA_HTTPS)) {
             return super.onShouldOverrideUrlLoading(view, url);
         } else {
+            WebLog.i("onShouldOverrideUrlLoading->"+url);
+            activity.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
             return true;
         }
     }
@@ -56,6 +63,7 @@ public class BridgeWebViewClient extends QMUIBridgeWebViewClient {
         if (url.toLowerCase().startsWith(SCHEMA_HTTP) || url.toLowerCase().startsWith(SCHEMA_HTTPS)) {
             return super.onShouldOverrideUrlLoading(view, url);
         } else {
+            activity.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
             return true;
         }
     }

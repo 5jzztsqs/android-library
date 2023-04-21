@@ -40,7 +40,8 @@ public abstract class BaseWebView extends QMUIWebView {
         settings.setCacheMode(WebSettings.LOAD_DEFAULT);
         settings.setTextZoom(100);
         settings.setDomStorageEnabled(true);
-
+        setFocusable(true);
+        setFocusableInTouchMode(true);
         setDownloadListener(new DownloadListener() {
             @Override
             public void onDownloadStart(String url, String userAgent, String contentDisposition, String mimetype, long contentLength) {

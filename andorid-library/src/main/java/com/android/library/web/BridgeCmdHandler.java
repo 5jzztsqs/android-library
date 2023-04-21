@@ -170,7 +170,7 @@ public class BridgeCmdHandler {
     public static void injectJS(AppCompatActivity activity, WebView webView) {
         String windowInfoJSON = "'" + getWindowInfo(activity).toJSONString() + "'";
         WebLog.json(windowInfoJSON);
-        String jsCode = "localStorage.setItem(\"windowInfo\", " + windowInfoJSON + ");if(!vConsole){const vConsole = new VConsole();}";
+        String jsCode = "localStorage.setItem(\"windowInfo\", " + windowInfoJSON + ");new VConsole();";
         executeJS(webView, jsCode);
     }
 

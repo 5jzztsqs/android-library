@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.qmuiteam.qmui.widget.QMUIWindowInsetLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/rootView"
@@ -10,5 +11,41 @@
            android:textColor="@color/white"
            android:textSize="18sp"
            android:text="欢迎使用"
+           android:visibility="gone"
            android:layout_gravity="center"/>
+       <LinearLayout
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:orientation="vertical"
+           android:gravity="center"
+           android:layout_gravity="center"
+           >
+              <com.qmuiteam.qmui.widget.roundwidget.QMUIRoundFrameLayout
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  app:qmui_backgroundColor="@color/white"
+                  >
+                     <EditText
+                         android:id="@+id/editText"
+                         android:layout_width="match_parent"
+                         android:layout_height="match_parent"
+                         android:layout_margin="12dp"
+                         android:minLines="3"
+                         android:maxLines="8"
+                         android:gravity="top"
+                         android:inputType="textMultiLine"
+                         android:background="@null"
+                         android:hint="请输入网址"
+                         />
+              </com.qmuiteam.qmui.widget.roundwidget.QMUIRoundFrameLayout>
+
+              <com.qmuiteam.qmui.widget.roundwidget.QMUIRoundButton
+                  android:id="@+id/launcher"
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:padding="8dp"
+                  android:layout_margin="12dp"
+                  android:text="启动"
+                  />
+       </LinearLayout>
 </com.qmuiteam.qmui.widget.QMUIWindowInsetLayout>

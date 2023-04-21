@@ -1,8 +1,11 @@
 package com.android.library.web;
 
+import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.net.http.SslError;
 import android.view.KeyEvent;
+import android.webkit.SslErrorHandler;
 import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebResourceResponse;
@@ -25,6 +28,7 @@ public class BridgeWebViewClient extends QMUIBridgeWebViewClient {
     private static final String SCHEMA_HTTPS = "https://";
     private AppCompatActivity activity;
     private IBridge bridge;
+
     public BridgeWebViewClient(WebView webView) {
         this(false, false, new BridgeHandler(webView));
         this.activity = (AppCompatActivity) webView.getContext();
@@ -39,9 +43,9 @@ public class BridgeWebViewClient extends QMUIBridgeWebViewClient {
 
     @Override
     protected boolean onShouldOverrideUrlLoading(WebView view, String url) {
-        if(url.toLowerCase().startsWith(SCHEMA_HTTP) || url.toLowerCase().startsWith(SCHEMA_HTTPS)){
+        if (url.toLowerCase().startsWith(SCHEMA_HTTP) || url.toLowerCase().startsWith(SCHEMA_HTTPS)) {
             return super.onShouldOverrideUrlLoading(view, url);
-        }else{
+        } else {
             return true;
         }
     }
@@ -49,9 +53,9 @@ public class BridgeWebViewClient extends QMUIBridgeWebViewClient {
     @Override
     protected boolean onShouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
         String url = request.getUrl().toString();
-        if(url.toLowerCase().startsWith(SCHEMA_HTTP) || url.toLowerCase().startsWith(SCHEMA_HTTPS)){
+        if (url.toLowerCase().startsWith(SCHEMA_HTTP) || url.toLowerCase().startsWith(SCHEMA_HTTPS)) {
             return super.onShouldOverrideUrlLoading(view, url);
-        }else{
+        } else {
             return true;
         }
     }
@@ -67,7 +71,7 @@ public class BridgeWebViewClient extends QMUIBridgeWebViewClient {
     public void onPageStarted(WebView view, String url, @Nullable Bitmap favicon) {
         super.onPageStarted(view, url, favicon);
         view.evaluateJavascript(BridgeData.getInstance().getVConsole(), null);
-        BridgeCmdHandler.injectJS(activity,view);
+        BridgeCmdHandler.injectJS(activity, view);
         if (bridge != null) {
             bridge.onPageStarted();
         }
@@ -82,7 +86,6 @@ public class BridgeWebViewClient extends QMUIBridgeWebViewClient {
     }
 
 
-
     @Override
     public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
         super.onReceivedError(view, request, error);
@@ -92,18 +95,30 @@ public class BridgeWebViewClient extends QMUIBridgeWebViewClient {
         String errorUrlHost = request.getUrl().getHost();
         String url = request.getUrl().toString();
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put("errorCode",errorCode);
-        jsonObject.put("loadUrlHost",loadUrlHost);
-        jsonObject.put("errorUrlHost",errorUrlHost);
-        jsonObject.put("description",description);
-        jsonObject.put("errorUrl",url);
+        jsonObject.put("errorCode", errorCode);
+        jsonObject.put("loadUrlHost", loadUrlHost);
+        jsonObject.put("errorUrlHost", errorUrlHost);
+        jsonObject.put("description", description);
+        jsonObject.put("errorUrl", url);
         WebLog.json(jsonObject);
         if (bridge != null) {
-            if(errorCode == ERROR_CONNECT && loadUrlHost.equals(errorUrlHost) && description.contains("ERR_CONNECTION_REFUSED")){
+            if (errorCode == ERROR_CONNECT && loadUrlHost.equals(errorUrlHost) && description.contains("ERR_CONNECTION_REFUSED")) {
                 bridge.onReceivedError(error.getErrorCode(), "无法连接到该网站", request.getUrl().toString());
             }
         }
     }
+
+
+    @SuppressLint("WebViewClientOnReceivedSslError")
+    @Override
+    public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
+        //https忽略证书问题
+        if (handler != null) {
+            //表示等待证书响应
+            handler.proceed();
+        }
+    }
+
 
     private static class BridgeHandler extends QMUIWebViewBridgeHandler {
         private BridgeCmdHandler bridgeCmdHandler;

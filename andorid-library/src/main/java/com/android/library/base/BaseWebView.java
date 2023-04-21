@@ -1,6 +1,7 @@
 package com.android.library.base;
 
 import android.content.Context;
+import android.os.Build;
 import android.util.AttributeSet;
 import android.webkit.DownloadListener;
 import android.webkit.WebChromeClient;
@@ -40,6 +41,9 @@ public abstract class BaseWebView extends QMUIWebView {
         settings.setCacheMode(WebSettings.LOAD_DEFAULT);
         settings.setTextZoom(100);
         settings.setDomStorageEnabled(true);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            settings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
+        }
         setFocusable(true);
         setFocusableInTouchMode(true);
         setDownloadListener(new DownloadListener() {

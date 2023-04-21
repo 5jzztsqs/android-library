@@ -33,10 +33,11 @@ public class BridgeCmdHandler {
     private static final String CMD_PICK_FILE = "pickFile";
     private static final String CMD_APP_INFO = "appInfo";
     private static final String CMD_NEW_WINDOW = "newWindow";
+    private static String V_CONSOLE;
     private AppCompatActivity activity;
-
     public BridgeCmdHandler(AppCompatActivity activity) {
         this.activity = activity;
+        this.V_CONSOLE = ResourceUtils.readAssets2String("vconsole.min.js");
     }
 
 
@@ -169,14 +170,12 @@ public class BridgeCmdHandler {
     public static void injectJS(AppCompatActivity activity, WebView webView) {
         String windowInfoJSON = "'" + getWindowInfo(activity).toJSONString() + "'";
         WebLog.json(windowInfoJSON);
-        String vConsole = ResourceUtils.readAssets2String("vconsole.min.js");
-        webView.evaluateJavascript(vConsole, null);
-        String jsCode = "localStorage.setItem(\"windowInfo\", " + windowInfoJSON + ");const vConsole = new VConsole();";
-        executeJS(webView,jsCode);
+        String jsCode = "localStorage.setItem(\"windowInfo\", " + windowInfoJSON + ");if(!vConsole){const vConsole = new VConsole();}";
+        executeJS(webView, jsCode);
     }
 
 
-    public static void executeJS(WebView webView,String js){
+    public static void executeJS(WebView webView, String js) {
         String injectJS = "(function(){" + js + "})()";
         WebLog.i(injectJS);
         webView.evaluateJavascript(injectJS, null);

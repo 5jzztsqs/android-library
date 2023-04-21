@@ -13,6 +13,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.alibaba.fastjson.JSONObject;
+import com.blankj.utilcode.util.ResourceUtils;
+import com.blankj.utilcode.util.ThreadUtils;
 import com.qmuiteam.qmui.widget.webview.QMUIBridgeWebViewClient;
 import com.qmuiteam.qmui.widget.webview.QMUIWebViewBridgeHandler;
 
@@ -23,7 +25,6 @@ public class BridgeWebViewClient extends QMUIBridgeWebViewClient {
     private static final String SCHEMA_HTTPS = "https://";
     private AppCompatActivity activity;
     private IBridge bridge;
-
     public BridgeWebViewClient(WebView webView) {
         this(false, false, new BridgeHandler(webView));
         this.activity = (AppCompatActivity) webView.getContext();
@@ -65,6 +66,8 @@ public class BridgeWebViewClient extends QMUIBridgeWebViewClient {
     @Override
     public void onPageStarted(WebView view, String url, @Nullable Bitmap favicon) {
         super.onPageStarted(view, url, favicon);
+        view.evaluateJavascript(BridgeData.getInstance().getVConsole(), null);
+        BridgeCmdHandler.injectJS(activity,view);
         if (bridge != null) {
             bridge.onPageStarted();
         }
@@ -76,7 +79,6 @@ public class BridgeWebViewClient extends QMUIBridgeWebViewClient {
         if (bridge != null) {
             bridge.onPageFinished();
         }
-        BridgeCmdHandler.injectJS(activity,view);
     }
 
 

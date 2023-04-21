@@ -14,11 +14,13 @@ public class LaunchActivity extends BaseActivity {
     private static final long MILLIS_IN_FUTURE = 2000;
     private static final long COUNT_DOWN_INTERVAL = 1000;
     private CountDownTimer countDownTimer;
-//    private String url = "http://192.168.1.81:8080/#/";
+//   private String url = "http://192.168.1.81:8080/#/";
 //    private String url = "https://nutui.jd.com/demo.html";
- //   private String url = "https://m.baidu.com";
+    private String url = "https://m.baidu.com";
  //   private String url = "https://www.toutiao.com/?source=m_redirect";
-    private String url = "https://m.jd.com/";
+//    private String url = "https://m.jd.com/";
+  //  private String url = "https://quark.sm.cn/";
+//    private String url = "https://www.zhihu.com/?utm_id=0";
 //   private String url = "http://test.imydao.cn:15888/standardapp/#/pages/login/login";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +41,7 @@ public class LaunchActivity extends BaseActivity {
      //           windowHolder.setAutoTitle(true);
                windowHolder.setHideTopBar(true);
                 windowHolder.setUrl(url);
+                windowHolder.setDebug(true);
                 BridgeWebViewActivity.start(LaunchActivity.this,windowHolder.toJSONString());
                 finish();
             }

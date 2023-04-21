@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -38,7 +39,6 @@ public class BridgeWebViewActivity extends BaseActivity implements IBridge {
     private WindowHolder windowHolder;
     private boolean receiveError;
     private static final String KET_WINDOW_HOLDER = "windowHolder";
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -105,6 +105,19 @@ public class BridgeWebViewActivity extends BaseActivity implements IBridge {
                 BarUtils.setStatusBarColor(this,Color.parseColor(windowHolder.getStatusBarColor()));
             }
         }
+        if(windowHolder.isDebug()){
+            TextView textView = new TextView(this);
+            textView.setText(getString(R.string.refresh));
+            textView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    defaultWebView.reload();
+                }
+            });
+            FrameLayout.LayoutParams buttonLp = ViewHelper.generateWrapContentFrameLayoutLayoutParams();
+            buttonLp.gravity = Gravity.RIGHT;
+            webViewContainer.addView(textView,buttonLp);
+        }
     }
 
     private void parseParams() {
@@ -156,7 +169,14 @@ public class BridgeWebViewActivity extends BaseActivity implements IBridge {
     public void onPageFinished() {
         WebLog.i("onPageFinished");
         if(!receiveError){
-            defaultWebView.setVisibility(View.VISIBLE);
+            //延时两秒再隐藏，防止错误页来不及隐藏
+            defaultWebView.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    defaultWebView.setVisibility(View.VISIBLE);
+                }
+            },800);
+
         }
     }
 

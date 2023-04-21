@@ -12,6 +12,7 @@ public class WindowHolder extends BaseEntity {
     private boolean showStatusBar;
     private boolean hideTopBar;
     private boolean hideBack;
+    private boolean debug;
     private boolean canGoBack = true;
 
     public String getTitle() {
@@ -84,5 +85,13 @@ public class WindowHolder extends BaseEntity {
 
     public void setStatusBarColor(String statusBarColor) {
         this.statusBarColor = statusBarColor;
+    }
+
+    public boolean isDebug() {
+        return debug;
+    }
+
+    public void setDebug(boolean debug) {
+        this.debug = debug;
     }
 }

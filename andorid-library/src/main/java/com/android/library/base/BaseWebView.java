@@ -2,12 +2,15 @@ package com.android.library.base;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.webkit.DownloadListener;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebViewClient;
 
 
 import com.qmuiteam.qmui.widget.webview.QMUIWebView;
+
+import rxhttp.wrapper.param.RxHttp;
 
 public abstract class BaseWebView extends QMUIWebView {
 
@@ -37,6 +40,13 @@ public abstract class BaseWebView extends QMUIWebView {
         settings.setCacheMode(WebSettings.LOAD_DEFAULT);
         settings.setTextZoom(100);
         settings.setDomStorageEnabled(true);
+
+        setDownloadListener(new DownloadListener() {
+            @Override
+            public void onDownloadStart(String url, String userAgent, String contentDisposition, String mimetype, long contentLength) {
+
+            }
+        });
     }
 
 

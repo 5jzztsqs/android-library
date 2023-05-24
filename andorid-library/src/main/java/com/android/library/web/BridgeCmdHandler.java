@@ -108,15 +108,19 @@ public class BridgeCmdHandler {
                         if (result == null || result.size() == 0) {
                             callback.finish(null);
                         } else {
-                            List<String> uris = new ArrayList<>();
-                            String path = result.get(0).getRealPath();
-                            File file = new File(path);
-                            Uri uri;
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                                uri = FileProvider.getUriForFile(activity, activity.getPackageName() + ".FileProvider", file);
-                            } else {
-                                uri = Uri.fromFile(file);
+                            List<String> paths = new ArrayList<>();
+                            for(LocalMedia localMedia:result){
+                                paths.add(localMedia.getPath());
                             }
+                            callback.finish(JSON.toJSONString(paths));
+//                            String path = result.get(0).getRealPath();
+//                            File file = new File(path);
+//                            Uri uri;
+//                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+//                                uri = FileProvider.getUriForFile(activity, activity.getPackageName() + ".FileProvider", file);
+//                            } else {
+//                                uri = Uri.fromFile(file);
+//                            }
 //                            for (int i = 0; i < result.size(); i++) {
 //                                String path = result.get(i).getRealPath();
 //                                File file = new File(path);

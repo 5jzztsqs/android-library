@@ -31,6 +31,8 @@ public abstract class BaseWebView extends QMUIWebView {
     private void initSettings(){
         WebSettings settings = getSettings();
         settings.setJavaScriptCanOpenWindowsAutomatically(true);
+        settings.setAllowUniversalAccessFromFileURLs(true);
+        settings.setAllowFileAccessFromFileURLs(true);
         settings.setJavaScriptEnabled(true);
         settings.setAllowContentAccess(true);
         settings.setUseWideViewPort(true);

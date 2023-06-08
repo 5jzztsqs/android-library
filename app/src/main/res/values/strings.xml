@@ -1,3 +1,8 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">WebView测试</string>
+    <string name="submit">确定</string>
+    <string name="record">录制</string>
+    <string name="stop">停止</string>
+    <string name="description_info">信息</string>
+    <string name="intro_message">不支持录像</string>
 </resources>

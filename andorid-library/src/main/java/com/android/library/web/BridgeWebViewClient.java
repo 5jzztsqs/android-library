@@ -2,6 +2,8 @@ package com.android.library.web;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.net.http.SslError;
@@ -63,7 +65,13 @@ public class BridgeWebViewClient extends QMUIBridgeWebViewClient {
         if (url.toLowerCase().startsWith(SCHEMA_HTTP) || url.toLowerCase().startsWith(SCHEMA_HTTPS)) {
             return super.onShouldOverrideUrlLoading(view, url);
         } else {
-            activity.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+            PackageManager packageManager = activity.getPackageManager();
+            ResolveInfo resolveInfo = packageManager.resolveActivity(intent, PackageManager.MATCH_DEFAULT_ONLY);
+            if(resolveInfo !=null){
+                activity.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
+                return true;
+            }
             return true;
         }
     }

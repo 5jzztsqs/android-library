@@ -31,4 +31,5 @@ android {
 dependencies {
 
     implementation project(':andorid-library')
+    implementation 'pub.devrel:easypermissions:3.0.0'
 }

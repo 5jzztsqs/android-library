@@ -110,7 +110,7 @@ public class BridgeCmdHandler {
                         } else {
                             List<String> paths = new ArrayList<>();
                             for(LocalMedia localMedia:result){
-                                paths.add(localMedia.getPath());
+                                paths.add(localMedia.getRealPath());
                             }
                             callback.finish(JSON.toJSONString(paths));
 //                            String path = result.get(0).getRealPath();
@@ -121,6 +121,7 @@ public class BridgeCmdHandler {
 //                            } else {
 //                                uri = Uri.fromFile(file);
 //                            }
+//                            List<String> uris = new ArrayList<>();
 //                            for (int i = 0; i < result.size(); i++) {
 //                                String path = result.get(i).getRealPath();
 //                                File file = new File(path);
@@ -132,8 +133,9 @@ public class BridgeCmdHandler {
 //                                    uri = Uri.fromFile(file);
 //                                }
 //                                WebLog.i(path+":"+uri.getPath());
-//                                uris.add(uri.toString());
+//                                uris.add(JSON.toJSONString(uri));
 //                            }
+//                            callback.finish(uris);
 //                            try {
 //                                Bitmap bitmap = ImageUtils.getBitmap(file);
 //                               String base64 = EncodeUtils.base64Encode2String(ImageUtils.bitmap2Bytes(bitmap));
@@ -156,7 +158,6 @@ public class BridgeCmdHandler {
 
                     @Override
                     public void onCancel() {
-
                         callback.finish(null);
                     }
                 });

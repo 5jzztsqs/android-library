@@ -6,7 +6,7 @@ import java.io.Serializable;
 
 public class RecordParam implements Serializable {
 
-    public static final int DEFAULT_MIN_DURATION = 10;
+    public static final int DEFAULT_MIN_DURATION = 5;
     public static final int DEFAULT_MAX_DURATION = 60;
     private String videoPath;
     private String videoScreenPath;

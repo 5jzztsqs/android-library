@@ -96,7 +96,7 @@ public class LaunchActivity extends BaseActivity  implements EasyPermissions.Per
 //        finish();
 
         RecordParam recordParam = new RecordParam();
-        recordParam.setMaxDuration(30);
+        recordParam.setMaxDuration(11);
         VideoCaptureActivity.startVideoCapture(this, JSON.toJSONString(recordParam),100);
         //MainActivity.startVideoCapture(this);
     }

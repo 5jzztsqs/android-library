@@ -33,7 +33,7 @@ public class ClockView extends View{
     private Paint paint = new Paint();
     private RectF rectF;
 
-    private int sweepAngle = 0;
+    private float sweepAngle = 0;
     private OnClockListener onClockListener;
     private long lastTouchEventUpTime;
     private CountDownTimer countDownTimer;
@@ -112,7 +112,7 @@ public class ClockView extends View{
         countDownTimer = new CountDownTimer(maxClock * COUNT_DOWN_INTERVAL,COUNT_DOWN_INTERVAL) {
             @Override
             public void onTick(long millisUntilFinished) {
-                sweepAngle += 360 / maxClock;
+                sweepAngle += 360 / (float)maxClock;
                 clockSeconds++;
                 invalidate();
             }

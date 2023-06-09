@@ -46,6 +46,7 @@ import android.widget.Toast;
 import android.widget.VideoView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import com.alibaba.fastjson.JSON;
@@ -69,7 +70,7 @@ import pub.devrel.easypermissions.PermissionRequest;
 
 
 @SuppressLint("NewApi")
-public class VideoCaptureActivity extends Activity implements EasyPermissions.PermissionCallbacks {
+public class VideoCaptureActivity extends AppCompatActivity implements EasyPermissions.PermissionCallbacks {
 
     private static final String TAG = VideoCaptureActivity.class.getSimpleName();
 

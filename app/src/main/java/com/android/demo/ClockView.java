@@ -129,13 +129,13 @@ public class ClockView extends View{
     }
 
     private void finishClock(){
+        countDownTimer.cancel();
         clocking = false;
         sweepAngle = 0;
         invalidate();
         if (onClockListener != null) {
             onClockListener.onFinishClock(clockSeconds);
         }
-        countDownTimer.cancel();
         clockSeconds = 0;
     }
     @Override

@@ -79,11 +79,6 @@ public class LaunchActivity extends BaseActivity  implements EasyPermissions.Per
         String lastUrl = MMKVManger.getString("url",null);
         editText.setText(lastUrl);
 
-        if(!EasyPermissions.hasPermissions(this,PERMISSIONS)){
-            EasyPermissions.requestPermissions(
-                    new PermissionRequest.Builder(this , 100, PERMISSIONS)
-                            .build());
-        }
 
     }
 
@@ -101,7 +96,7 @@ public class LaunchActivity extends BaseActivity  implements EasyPermissions.Per
 //        finish();
 
         RecordParam recordParam = new RecordParam();
-        recordParam.setDuration(120);
+        recordParam.setMaxDuration(30);
         VideoCaptureActivity.startVideoCapture(this, JSON.toJSONString(recordParam),100);
         //MainActivity.startVideoCapture(this);
     }

@@ -12,6 +12,7 @@ public class RecordParam implements Serializable {
     private String videoScreenPath;
     private String videoUrl;
     private long size;
+    private int maxDuration;
     private int duration;
 
     public String getVideoPath() {
@@ -46,6 +47,14 @@ public class RecordParam implements Serializable {
         this.size = size;
     }
 
+    public int getMaxDuration() {
+        return maxDuration;
+    }
+
+    public void setMaxDuration(int maxDuration) {
+        this.maxDuration = maxDuration;
+    }
+
     public int getDuration() {
         return duration;
     }
@@ -53,7 +62,6 @@ public class RecordParam implements Serializable {
     public void setDuration(int duration) {
         this.duration = duration;
     }
-
 
     public String toJSONString(){
         return JSON.toJSONString(this);

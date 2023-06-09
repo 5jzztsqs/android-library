@@ -122,20 +122,20 @@ public class ClockView extends View{
                 finishClock();
             }
         };
+        countDownTimer.start();
         if(onClockListener != null){
             onClockListener.onStartClock();
         }
-        countDownTimer.start();
     }
 
     private void finishClock(){
-        countDownTimer.cancel();
         clocking = false;
         sweepAngle = 0;
         invalidate();
         if (onClockListener != null) {
             onClockListener.onFinishClock(clockSeconds);
         }
+        countDownTimer.cancel();
         clockSeconds = 0;
     }
     @Override

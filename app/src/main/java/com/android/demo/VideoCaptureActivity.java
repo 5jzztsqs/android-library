@@ -33,6 +33,7 @@ import android.os.SystemClock;
 import android.util.Log;
 import android.util.Size;
 import android.util.SparseIntArray;
+import android.view.KeyEvent;
 import android.view.Surface;
 import android.view.TextureView;
 import android.view.View;
@@ -137,7 +138,7 @@ public class VideoCaptureActivity extends Activity implements EasyPermissions.Pe
     private TextView mBack;
     private TextView mSubmit;
     private File mOutputFile;
-
+    private int clockSeconds = 0;
 
 
     private CameraDevice.StateCallback mStateCallback = new CameraDevice.StateCallback() {
@@ -199,8 +200,8 @@ public class VideoCaptureActivity extends Activity implements EasyPermissions.Pe
         Intent intent = getIntent();
         String jsonString = intent.getStringExtra(KEY_RECORD_PARAM);
         if (jsonString != null) {
-            recordParam = JSON.parseObject(jsonString,RecordParam.class);
-            int duration = recordParam.getDuration();
+            recordParam = JSON.parseObject(jsonString, RecordParam.class);
+            int duration = recordParam.getMaxDuration();
             if (duration > RecordParam.DEFAULT_MAX_DURATION) {
                 duration = RecordParam.DEFAULT_MAX_DURATION;
             }
@@ -213,14 +214,16 @@ public class VideoCaptureActivity extends Activity implements EasyPermissions.Pe
                 public void onChronometerTick(Chronometer chronometer) {
                     SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss", Locale.US);
                     sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
-                    Date date = new Date(maxDuration * 1000 - (chronometer.getBase() - SystemClock.elapsedRealtime()));
+                    Date date = new Date(clockSeconds * 1000);
                     mChronometer.setText(sdf.format(date));
+                    clockSeconds++;
                 }
             });
             mClockView.setMaxClock(duration);
             mClockView.setOnClockListener(new ClockView.OnClockListener() {
                 @Override
                 public void onStartClock() {
+                    clockSeconds = 0;
                     if (mVideoViewContainer.getVisibility() == View.GONE) {
                         recordParam.setVideoPath(null);
                         recordParam.setDuration(0);
@@ -232,9 +235,20 @@ public class VideoCaptureActivity extends Activity implements EasyPermissions.Pe
                 @Override
                 public void onFinishClock(int seconds) {
                     if (mIsRecordingVideo) {
-                        recordParam.setVideoPath(mOutputFile.getAbsolutePath());
-                        recordParam.setDuration(seconds);
-                        stopRecordingVideo();
+                        mRotate.setVisibility(View.GONE);
+                        mChronometer.setVisibility(View.GONE);
+                        mClockView.setVisibility(View.GONE);
+                        mClockView.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                mRotate.setVisibility(View.VISIBLE);
+                                mClockView.setVisibility(View.VISIBLE);
+                                stopRecordingVideo();
+                                recordParam.setVideoPath(mOutputFile.getAbsolutePath());
+                                recordParam.setDuration(seconds);
+                            }
+                        }, 1000);
+
                     }
                 }
 
@@ -265,9 +279,17 @@ public class VideoCaptureActivity extends Activity implements EasyPermissions.Pe
     }
 
     private void setupVideoView() {
-        MediaController mediaController = new MediaController(this);
-         mediaController.setAnchorView(mVideoView);
-         mVideoView.setMediaController(mediaController);
+        /*MediaController mediaController = new MediaController(this) {
+            public boolean dispatchKeyEvent(KeyEvent event) {
+                if (event.getKeyCode() == KeyEvent.KEYCODE_BACK) {
+                    finish();
+                    return true;
+                }
+                return super.dispatchKeyEvent(event);
+            }
+        };
+        mediaController.setAnchorView(mVideoView);
+        mVideoView.setMediaController(mediaController);*/
         mVideoView.setOnErrorListener(new MediaPlayer.OnErrorListener() {
             @Override
             public boolean onError(MediaPlayer mp, int what, int extra) {
@@ -374,8 +396,11 @@ public class VideoCaptureActivity extends Activity implements EasyPermissions.Pe
 
         mCameraManager = (CameraManager) getSystemService(Context.CAMERA_SERVICE);
         try {
-            if (!mCameraOpenCloseLock.tryAcquire(2500, TimeUnit.MILLISECONDS)) {
-                throw new RuntimeException("Time out waiting to lock camera opening.");
+            if (!mCameraOpenCloseLock.tryAcquire(3000, TimeUnit.MILLISECONDS)) {
+                toast("请赋予设备上的照片、媒体内容和文件的访问权限，然后重试");
+                finish();
+                return;
+                // throw new RuntimeException("Time out waiting to lock camera opening.");
             }
             mCameraId = mCameraManager.getCameraIdList()[0];
             mRotate.setVisibility(View.VISIBLE);
@@ -619,8 +644,10 @@ public class VideoCaptureActivity extends Activity implements EasyPermissions.Pe
 
     @Override
     public void onPause() {
-        closeCamera();
-        stopBackgroundThread();
+        if (EasyPermissions.hasPermissions(this, PERMISSIONS)) {
+            closeCamera();
+            stopBackgroundThread();
+        }
         super.onPause();
         if (mVideoViewContainer.getVisibility() == View.VISIBLE) {
             mVideoView.pause();
@@ -676,4 +703,5 @@ public class VideoCaptureActivity extends Activity implements EasyPermissions.Pe
         }
 
     }
+
 }
